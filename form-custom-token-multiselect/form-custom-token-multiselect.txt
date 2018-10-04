@@ -1,0 +1,40 @@
+<form>
+  <label>form-custom-token-multiselect</label>
+  <fieldset submitButton="true">
+    <input type="multiselect" token="selectCategory" searchWhenChanged="true">
+      <label>Select Category</label>
+      <fieldForLabel>categoryId</fieldForLabel>
+      <fieldForValue>categoryId</fieldForValue>
+      <search>
+        <query>sourcetype=access_* | stats count by categoryId | sort asc categoryId</query>
+        <earliest>-270d@d</earliest>
+        <latest>now</latest>
+      </search>
+      <default>ACCESSORIES</default>
+      <delimiter> OR </delimiter>
+      <prefix>(</prefix>
+      <suffix>)</suffix>
+      <valuePrefix>categoryId="</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Total Sales, by Category</title>
+      <table>
+        <search>
+          <query>index=main sourcetype=access_* $selectCategory$ | stats sum(bytes) as TotalSales by categoryId  | fieldformat TotalSales="$" + tostring(TotalSales,"commas") | rename categoryId AS Category</query>
+          <earliest>-270d@d</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">true</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>
