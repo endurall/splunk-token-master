@@ -1,0 +1,56 @@
+<form>
+  <label>form-custom-tokens-cascading-dropdowns</label>
+  <fieldset submitButton="false">
+    <input type="dropdown" token="selectCountry" searchWhenChanged="true">
+      <label>Country</label>
+      <fieldForLabel>Country</fieldForLabel>
+      <fieldForValue>Country</fieldForValue>
+      <search>
+        <query>sourcetype=access_* | iplocation clientip | stats count by Country</query>
+        <earliest>-270d@d</earliest>
+        <latest>now</latest>
+      </search>
+    </input>
+    <input type="dropdown" token="selectRegion" searchWhenChanged="true">
+      <label>State</label>
+      <fieldForLabel>Region</fieldForLabel>
+      <fieldForValue>Region</fieldForValue>
+      <search>
+        <query>sourcetype=access_*   | iplocation clientip | search Country=$selectCountry|s$ | stats count by Region</query>
+        <earliest>-270d@d</earliest>
+        <latest>now</latest>
+      </search>
+    </input>
+    <input type="dropdown" token="selectCity" searchWhenChanged="true">
+      <label>City</label>
+      <fieldForLabel>City</fieldForLabel>
+      <fieldForValue>City</fieldForValue>
+      <search>
+        <query>sourcetype=access_*   | iplocation clientip | search Country=$selectCountry|s$ Region=$selectRegion|s$ | stats count by City</query>
+        <earliest>-270d@d</earliest>
+        <latest>now</latest>
+      </search>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Count of Items Sold, by Category</title>
+      <table>
+        <title></title>
+        <search>
+          <query>index=main sourcetype=access_* | iplocation clientip | search Country=$selectCountry|s$ Region=$selectRegion|s$ City=$selectCity|s$ | stats count by  categoryId Country Region City | stats list(count), values(categoryId) by Country Region City | rename list(count) AS Sold | rename values(categoryId) AS Category</query>
+          <earliest>-270d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">true</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>
