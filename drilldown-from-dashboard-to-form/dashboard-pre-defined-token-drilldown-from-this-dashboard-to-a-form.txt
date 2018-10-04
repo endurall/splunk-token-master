@@ -1,0 +1,25 @@
+<dashboard>
+  <label>dashboard-pre-defined-token-drilldown-from-this-dashboard-to-a-form  [$click.value$]</label>
+  <row>
+    <panel>
+      <table>
+        <title>Click on any value in the row, $click.value$ will send the leftmost value to the targeted form.</title>
+      <search>
+          <query>
+            index="_internal" | chart count by sourcetype | sort count desc* 
+          </query>
+          <earliest>-12m</earliest>
+      <latest>now</latest>
+      </search>
+      <option name="count">15</option>
+      <option name="showPager">true</option>
+      <drilldown target="blank">
+       <!-- sourcetype_tok is the token in form_receiving_sourcetype_value_from_dashboard_drilldown -->
+       <link>
+          form_receiving_sourcetype_value_from_dashboard_drilldown?form.sourcetype_tok=$click.value$
+        </link>
+      </drilldown>   
+      </table>
+    </panel>
+  </row>
+</dashboard>

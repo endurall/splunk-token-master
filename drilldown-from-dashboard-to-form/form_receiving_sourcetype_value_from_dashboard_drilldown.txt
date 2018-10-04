@@ -1,0 +1,11 @@
+<form>
+  <label>form_receiving_sourcetype_value_from_dashboard_drilldown</label>
+  <fieldset submitButton="false" autoRun="true"></fieldset>
+  <row>
+    <panel>
+      <input type="text" token="sourcetype_tok">
+        <label>[ $sourcetype_tok$ ] is the value passed from the dashboard.</label>
+      </input>
+    </panel>
+  </row>
+</form>
