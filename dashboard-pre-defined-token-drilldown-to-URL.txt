@@ -1,0 +1,20 @@
+<dashboard>
+  <label>dashboard-pre-defined-token-drilldown-to-URL  [$click.value$]</label>
+  <row>
+    <panel>
+      <table>
+        <title>Click on any value in the row, $click.value$ will send the leftmost value to answers.splunk.</title>
+        <search>
+          <query>
+        index="_internal" | chart count by sourcetype | sort count desc* 
+        </query>
+          <earliest>-12m</earliest>
+          <latest>now</latest>
+        </search>
+        <drilldown target="blank">
+          <link>http://answers.splunk.com/search?q=$click.value$</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+</dashboard>
