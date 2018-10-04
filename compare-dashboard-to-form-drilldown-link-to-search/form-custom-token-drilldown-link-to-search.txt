@@ -1,0 +1,26 @@
+<form>
+  <label>form-auto-generated-token-drilldown-link-to-search</label>
+  <fieldset submitButton="false">
+    <input type="time" token="field1">
+      <label></label>
+      <default>
+        <earliest>-5m@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <event>
+        <search>
+          <query>index=_internal sourcetype=splunkd earliest=$field1.earliest$ latest=$field1.latest$| head 3</query>
+        </search>
+        <option name="rowNumbers">0</option>
+        <option name="table.drilldown">all</option>
+        <option name="table.sortDirection">asc</option>
+        <option name="table.wrap">1</option>
+        <option name="type">table</option>
+      </event>
+    </panel>
+  </row>
+</form>
